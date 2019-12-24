@@ -5,7 +5,6 @@ import sys
 from importlib import reload
 reload(sys)
 import pandas as pd
-#sys.setdefaultencoding('utf8')
 from io import StringIO
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
@@ -14,11 +13,8 @@ from pdfminer.pdfpage import PDFPage
 import os
 import sys, getopt
 import numpy as np
-from bs4 import BeautifulSoup
 import urllib
 from urllib.request import urlopen
-#from urllib2 import urlopen
-#Function converting pdf to string
 def convert(fname, pages=None):
     if not pages:
         pagenums = set()
@@ -38,7 +34,7 @@ def convert(fname, pages=None):
     text = output.getvalue()
     output.close
     return text
-#Function to extract names from the string using spacy
+#Function to extract name
 def extract_name(string):
    # r1 = String(string,'utf-8')
     nlp = spacy.load('xx_ent_wiki_sm')
@@ -48,21 +44,18 @@ def extract_name(string):
         if(ent.label_ == 'PER'):
             print(ent.text)
             break
-#Function to extract Phone Numbers from string using regular expressions
+#Function to extract Phone Numbers
 def extract_phone_numbers(string):
     r = re.compile(r'(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})')
     phone_numbers = r.findall(string)
     return [re.sub(r'\D', '', number) for number in phone_numbers]
-#Function to extract Email address from a string using regular expressions
+#Function to extract Email
 def extract_email_addresses(string):
     r = re.compile(r'[\w\.-]+@[\w\.-]+')
     return r.findall(string)
-#Converting pdf to string
 resume_string = convert(r"C:\Users\Dell\Desktop\SAMPLE1.pdf")
 resume_string1 = resume_string
-#Removing commas in the resume for an effecient check
 resume_string = resume_string.replace(',',' ')
-#Converting all the charachters in lower case
 resume_string = resume_string.lower()
 
 with open(r'C:\Users\Dell\Documents\resume-parser\techatt.csv') as f:
@@ -74,7 +67,7 @@ with open(r'C:\Users\Dell\Documents\resume-parser\techskill.csv') as f:
 with open(r'C:\Users\Dell\Documents\resume-parser\nontechnicalskills.csv') as f:
     reader = csv.reader(f)
     your_list1 = list(reader)
-#Sets are used as it has a a constant time for lookup hence the overall the time for the total code will not exceed O(n)
+
 s = set(your_list[0])
 s1 = your_list
 s2 = your_listatt
@@ -92,14 +85,14 @@ for i in range(len(y)):
         y1.append(y[i])
 print(y1)
 print('\n')
-print('Email id is')
+print('Email id:')
 print(extract_email_addresses(resume_string))
 for word in resume_string.split(" "):
     if word in s:
         skills.append(word)
 skills1 = list(set(skills))
 print('\n')
-print("Following are his/her Technical Skills")
+print("Technical Skills")
 print('\n')
 np_a1 = np.array(your_list)
 for i in range(len(skills1)):
@@ -112,7 +105,6 @@ for i in range(nlen):
     print(s2[0][skillindex[i]])
     print('\n')
 
-#Sets are used as it has a a constant time for lookup hence the overall the time for the total code will not exceed O(n)
 s1 = set(your_list1[0])
 nontechskills = []
 for word in resume_string.split(" "):
@@ -121,7 +113,7 @@ for word in resume_string.split(" "):
 nontechskills = set(nontechskills)
 print('\n')
 
-print("Following are his/her Non Technical Skills")
+print("Non Technical Skills")
 list5 = list(nontechskills)
 print('\n')
 for i in range(len(list5)):
