@@ -13,8 +13,7 @@ from pdfminer.pdfpage import PDFPage
 import os
 import sys, getopt
 import numpy as np
-import urllib
-from urllib.request import urlopen
+
 def convert(fname, pages=None):
     if not pages:
         pagenums = set()
